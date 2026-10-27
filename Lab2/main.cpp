@@ -5,10 +5,10 @@
 
 namespace {
 
-    int g_total = 0;   //скільки перевірок виконано
-    int g_failed = 0;  //скільки з них провалилось
+    int g_total = 0;   //СЃРєС–Р»СЊРєРё РїРµСЂРµРІС–СЂРѕРє РІРёРєРѕРЅР°РЅРѕ
+    int g_failed = 0;  //СЃРєС–Р»СЊРєРё Р· РЅРёС… РїСЂРѕРІР°Р»РёР»РѕСЃСЊ
 
-    //перевірка, буде друкувани результат тесту
+    //РїРµСЂРµРІС–СЂРєР°, Р±СѓРґРµ РґСЂСѓРєСѓРІР°РЅРё СЂРµР·СѓР»СЊС‚Р°С‚ С‚РµСЃС‚Сѓ
     void check(bool condition, const std::string& name) {
         ++g_total;
         if (condition) {
@@ -20,19 +20,19 @@ namespace {
         }
     }
 
-    // Допоміжна функція: створює коректний альбом із 5 платними треками.
-    // Конструкторів у класі ще немає, тому використовуємо сеттери
+    // Р”РѕРїРѕРјС–Р¶РЅР° С„СѓРЅРєС†С–СЏ: СЃС‚РІРѕСЂСЋС” РєРѕСЂРµРєС‚РЅРёР№ Р°Р»СЊР±РѕРј С–Р· 5 РїР»Р°С‚РЅРёРјРё С‚СЂРµРєР°РјРё.
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС–РІ Сѓ РєР»Р°СЃС– С‰Рµ РЅРµРјР°С”, С‚РѕРјСѓ РІРёРєРѕСЂРёСЃС‚РѕРІСѓС”РјРѕ СЃРµС‚С‚РµСЂРё
     Album makeAlbum() {
         Album a;
-        a.setTitle("Abbey Road");
-        a.setArtist("The Beatles");
-        a.setYear(1969);
-        a.addTracks(5);
+        a.setTitle("Random Access Memories");
+        a.setArtist("Daft Punk");
+        a.setYear(2013);
+        a.addTracks(13);
         return a;
     }
 
-    // Приймає альбом за константним посиланням: компілюється тільки тоді,
-    // коли всі методи читання справді оголошені const
+    // РџСЂРёР№РјР°С” Р°Р»СЊР±РѕРј Р·Р° РєРѕРЅСЃС‚Р°РЅС‚РЅРёРј РїРѕСЃРёР»Р°РЅРЅСЏРј: РєРѕРјРїС–Р»СЋС”С‚СЊСЃСЏ С‚С–Р»СЊРєРё С‚РѕРґС–,
+    // РєРѕР»Рё РІСЃС– РјРµС‚РѕРґРё С‡РёС‚Р°РЅРЅСЏ СЃРїСЂР°РІРґС– РѕРіРѕР»РѕС€РµРЅС– const
     void print(const Album& a) {
         std::cout << a.title() << " | " << a.artist() << " | " << a.year()
             << " | total=" << a.totalTracks() << " | free="
@@ -42,80 +42,80 @@ namespace {
 } 
 
 int main() {
-    // 1. Щойно створений об'єкт без назви порушує інваріант 
+    // 1. Р©РѕР№РЅРѕ СЃС‚РІРѕСЂРµРЅРёР№ РѕР±'С”РєС‚ Р±РµР· РЅР°Р·РІРё РїРѕСЂСѓС€СѓС” С–РЅРІР°СЂС–Р°РЅС‚ 
     {
         Album a;
         check(!a.isValid(), "1. default object is invalid (empty title)");
     }
 
-    // 2. Успішна зміна полів
+    // 2. РЈСЃРїС–С€РЅР° Р·РјС–РЅР° РїРѕР»С–РІ
     {
         Album a;
-        bool ok = a.setTitle("Thriller") && a.setArtist("Michael Jackson") &&
-            a.setYear(1982);
-        check(ok && a.title() == "Thriller" && a.year() == 1982,
+        bool ok = a.setTitle("Dirty Mind") && a.setArtist("Prince") &&
+            a.setYear(1980);
+        check(ok && a.title() == "Dirty Mind" && a.year() == 1980,
             "2. valid setters change the state");
     }
 
-    // 3. Відхилення некоректної назви і незмінність стану
+    // 3. Р’С–РґС…РёР»РµРЅРЅСЏ РЅРµРєРѕСЂРµРєС‚РЅРѕС— РЅР°Р·РІРё С– РЅРµР·РјС–РЅРЅС–СЃС‚СЊ СЃС‚Р°РЅСѓ
     {
         Album a = makeAlbum();
         bool r1 = a.setTitle("");
-        bool r2 = a.setTitle("Abbey Road ");
-        check(!r1 && !r2 && a.title() == "Abbey Road",
+        bool r2 = a.setTitle("Random Access Memories ");
+        check(!r1 && !r2 && a.title() == "Random Access Memories",
             "3. bad title rejected, state unchanged");
     }
 
-    // 4. Відхилення некоректного виконавця
+    // 4. Р’С–РґС…РёР»РµРЅРЅСЏ РЅРµРєРѕСЂРµРєС‚РЅРѕРіРѕ РІРёРєРѕРЅР°РІС†СЏ
     {
         Album a = makeAlbum();
         bool r = a.setArtist("");
-        check(!r && a.artist() == "The Beatles",
+        check(!r && a.artist() == "Daft Punk",
             "4. bad artist rejected, state unchanged");
     }
 
-    // 5. Відхилення некоректного року (обидві межі)
+    // 5. Р’С–РґС…РёР»РµРЅРЅСЏ РЅРµРєРѕСЂРµРєС‚РЅРѕРіРѕ СЂРѕРєСѓ (РѕР±РёРґРІС– РјРµР¶С–)
     {
         Album a = makeAlbum();
         bool r1 = a.setYear(1899);
         bool r2 = a.setYear(2027);
-        check(!r1 && !r2 && a.year() == 1969,
+        check(!r1 && !r2 && a.year() == 2013, 
             "5. bad year rejected, state unchanged");
     }
 
-    // 6. Додавання треків: коректне і некоректне
+    // 6. Р”РѕРґР°РІР°РЅРЅСЏ С‚СЂРµРєС–РІ: РєРѕСЂРµРєС‚РЅРµ С– РЅРµРєРѕСЂРµРєС‚РЅРµ
     {
         Album a = makeAlbum();
         bool r0 = a.addTracks(0);
         bool rNeg = a.addTracks(-3);
         bool rBig = a.addTracks(Album::kMaxTracks);
         bool rOk = a.addTracks(2);
-        check(!r0 && !rNeg && !rBig && rOk && a.totalTracks() == 7,
+        check(!r0 && !rNeg && !rBig && rOk && a.totalTracks() == 15,
             "6. addTracks rejects 0, negative, over limit");
     }
 
-    // 7. Усі треки стають безкоштовними
+    // 7. РЈСЃС– С‚СЂРµРєРё СЃС‚Р°СЋС‚СЊ Р±РµР·РєРѕС€С‚РѕРІРЅРёРјРё
     {
         Album a = makeAlbum();
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 13; ++i) {
             a.makeTrackFree();
         }
         check(a.isFullyFree() && a.paidTracks() == 0 && a.isValid(),
             "7. all tracks can become free");
     }
 
-    // 8. Не можна зробити безкоштовним більше, ніж є платних
+    // 8. РќРµ РјРѕР¶РЅР° Р·СЂРѕР±РёС‚Рё Р±РµР·РєРѕС€С‚РѕРІРЅРёРј Р±С–Р»СЊС€Рµ, РЅС–Р¶ С” РїР»Р°С‚РЅРёС…
     {
         Album a = makeAlbum();
         for (int i = 0; i < 5; ++i) {
             a.makeTrackFree();
         }
         bool extra = a.makeTrackFree();
-        check(!extra && a.freeTracks() == 5 && a.isValid(),
+        check(!extra && a.freeTracks() == 13 && a.isValid(),
             "8. makeTrackFree with no paid tracks is rejected");
     }
 
-    // 9. Не можна зробити платним, якщо безкоштовних немає
+    // 9. РќРµ РјРѕР¶РЅР° Р·СЂРѕР±РёС‚Рё РїР»Р°С‚РЅРёРј, СЏРєС‰Рѕ Р±РµР·РєРѕС€С‚РѕРІРЅРёС… РЅРµРјР°С”
     {
         Album a = makeAlbum();
         bool r = a.makeTrackPaid();
@@ -123,38 +123,38 @@ int main() {
             "9. makeTrackPaid with no free tracks is rejected");
     }
 
-    // 10. Безкоштовний і назад платний: стан відновлюється
+    // 10. Р‘РµР·РєРѕС€С‚РѕРІРЅРёР№ С– РЅР°Р·Р°Рґ РїР»Р°С‚РЅРёР№: СЃС‚Р°РЅ РІС–РґРЅРѕРІР»СЋС”С‚СЊСЃСЏ
     {
         Album a = makeAlbum();
         a.makeTrackFree();
         bool back = a.makeTrackPaid();
-        check(back && a.freeTracks() == 0 && a.paidTracks() == 5,
+        check(back && a.freeTracks() == 0 && a.paidTracks() == 13,
             "10. free then paid restores the state");
     }
 
-    // 11. Статичний метод формату викликається без об'єкта
+    // 11. РЎС‚Р°С‚РёС‡РЅРёР№ РјРµС‚РѕРґ С„РѕСЂРјР°С‚Сѓ РІРёРєР»РёРєР°С”С‚СЊСЃСЏ Р±РµР· РѕР±'С”РєС‚Р°
     {
         check(Album::isValidText("Revolver") && !Album::isValidText("") &&
             !Album::isValidText(" Revolver"),
             "11. static isValidText works without an object");
     }
 
-    // 12. Інваріант тримається після довільної послідовності викликів
+    // 12. Р†РЅРІР°СЂС–Р°РЅС‚ С‚СЂРёРјР°С”С‚СЊСЃСЏ РїС–СЃР»СЏ РґРѕРІС–Р»СЊРЅРѕС— РїРѕСЃР»С–РґРѕРІРЅРѕСЃС‚С– РІРёРєР»РёРєС–РІ
     {
         Album a = makeAlbum();
         a.makeTrackFree();
         a.addTracks(3);
         a.makeTrackPaid();
-        a.makeTrackPaid();  // зайвий виклик відхиляється
+        a.makeTrackPaid();  // Р·Р°Р№РІРёР№ РІРёРєР»РёРє РІС–РґС…РёР»СЏС”С‚СЊСЃСЏ
         a.makeTrackFree();
-        a.setYear(5000);    // некоректний рік відхиляється
+        a.setYear(5000);    // РЅРµРєРѕСЂРµРєС‚РЅРёР№ СЂС–Рє РІС–РґС…РёР»СЏС”С‚СЊСЃСЏ
         check(a.isValid(), "12. invariant holds after a call sequence");
     }
 
-    // Демонстрація print(const Album&)
+    // Р”РµРјРѕРЅСЃС‚СЂР°С†С–СЏ print(const Album&)
     print(makeAlbum());
 
     std::cout << "\nTests: " << g_total << ", failed: " << g_failed << "\n";
-    // Код повернення 0 означає «усе гаразд»
+    // РљРѕРґ РїРѕРІРµСЂРЅРµРЅРЅСЏ 0 РѕР·РЅР°С‡Р°С” В«СѓСЃРµ РіР°СЂР°Р·РґВ»
     return g_failed == 0 ? 0 : 1;
 }
