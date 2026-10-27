@@ -1,0 +1,2 @@
+C:/Users/gehet/Desktop/Універ заданія/Для лаб ооп/Lab2/out/build/x64-debug/CMakeFiles/edit_cache.dir
+C:/Users/gehet/Desktop/Універ заданія/Для лаб ооп/Lab2/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
